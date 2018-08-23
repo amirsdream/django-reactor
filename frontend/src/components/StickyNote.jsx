@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {notes} from "../actions";
+import {notes,auth} from "../actions";
 
 class StickyNote extends Component {
 
@@ -38,6 +38,9 @@ submitNote = (e) => {
       <div>
         <h2>Welcome to StickyNote!</h2>
         <hr />
+         <div style={{textAlign: "right"}}>
+          {this.props.user.username} (<a onClick={this.props.logout}>logout</a>)
+        </div>
         <h3>Add new note</h3>
         <form onSubmit={this.submitNote}>
           <input
@@ -68,12 +71,13 @@ submitNote = (e) => {
 
 
 const mapStateToProps = state => {
-  return {notes: state.notes,
+  return {
+    notes: state.notes,
+    user: state.auth.user,
   }
 }
 
 const mapDispatchToProps = dispatch => {
-
   return {
     fetchNotes: () => {
       dispatch(notes.fetchNotes());
@@ -82,11 +86,12 @@ const mapDispatchToProps = dispatch => {
       return dispatch(notes.addNote(text));
     },
     updateNote: (id, text) => {
-    return dispatch(notes.updateNote(id, text));
+      return dispatch(notes.updateNote(id, text));
     },
     deleteNote: (id) => {
-    return dispatch(notes.deleteNote(id));
+      dispatch(notes.deleteNote(id));
     },
+    logout: () => dispatch(auth.logout()),
   }
 }
 //
