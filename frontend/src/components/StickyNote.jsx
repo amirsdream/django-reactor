@@ -45,6 +45,8 @@ submitNote = (e) => {
             onChange={(e) => this.setState({text: e.target.value})}
             required />
           <input type="submit" value="Save Note" />
+            <button onClick={this.resetForm}>Reset</button>
+
         </form>
         <h3>Notes</h3>
         <table>
@@ -52,7 +54,7 @@ submitNote = (e) => {
             {this.props.notes.map((note, id) => (
               <tr key={`note_${id}`}>
                 <td>{note.text}</td>
-                <td><button>edit</button></td>
+                <td><button onClick={() => this.selectForEdit(id)}>edit</button></td>
                 <td><button onClick={() => this.props.deleteNote(id)}>delete</button></td>
               </tr>
             ))}
