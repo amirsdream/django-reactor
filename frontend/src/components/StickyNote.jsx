@@ -9,6 +9,9 @@ state = {
   text: "",
   updateNoteId: null,
 }
+componentDidMount() {
+    this.props.fetchNotes();
+}
 
 resetForm = () => {
   this.setState({text: "", updateNoteId: null});
@@ -22,11 +25,10 @@ selectForEdit = (id) => {
 submitNote = (e) => {
   e.preventDefault();
   if (this.state.updateNoteId === null) {
-    this.props.addNote(this.state.text);
+    this.props.addNote(this.state.text).then(this.resetForm);
   } else {
-    this.props.updateNote(this.state.updateNoteId, this.state.text);
+    this.props.updateNote(this.state.updateNoteId, this.state.text).then(this.resetForm);
   }
-  this.resetForm();
 }
 
 
@@ -70,20 +72,37 @@ const mapStateToProps = state => {
   }
 }
 
-
 const mapDispatchToProps = dispatch => {
+
   return {
+    fetchNotes: () => {
+      dispatch(notes.fetchNotes());
+    },
     addNote: (text) => {
-      dispatch(notes.addNote(text));
+      return dispatch(notes.addNote(text));
     },
     updateNote: (id, text) => {
-      dispatch(notes.addNote(id, text));
+    return dispatch(notes.updateNote(id, text));
     },
     deleteNote: (id) => {
-      dispatch(notes.deleteNote(id));
+    return dispatch(notes.deleteNote(id));
     },
   }
 }
+//
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     addNote: (text) => {
+//       dispatch(notes.addNote(text));
+//     },
+//     updateNote: (id, text) => {
+//       dispatch(notes.addNote(id, text));
+//     },
+//     deleteNote: (id) => {
+//       dispatch(notes.deleteNote(id));
+//     },
+//   }
+// }
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(StickyNote);
