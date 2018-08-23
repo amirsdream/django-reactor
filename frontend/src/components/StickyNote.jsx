@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {notes} from "../actions";
 
-
 class StickyNote extends Component {
 
 state = {
